@@ -17,9 +17,10 @@ router.get('/books', (req, res, next) => {
 
 router.get('/books/:id', (req, res, next) => {
   knex('books')
+    .where('id', Number.parseInt(req.params.id))
     .first()
     .then((book) => {
-      if (!book) {ad
+      if (!book) {
         return next();
       }
       res.send(track);
@@ -46,7 +47,7 @@ router.post('/books', (req, res, next) => {
         .then ((results) => {
           res.send(results[0]);
         });
-      });
+      })
         .catch((err) => {
           next(err);
     });
