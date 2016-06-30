@@ -19,7 +19,7 @@ router.post('/users', (req, res, next) => {
     .set('Content-Type', 'text/plain')
     .send('Password must not be blank');
   }
-  if ()
+
   bcrypt.hash(req.body.password, 12, (hashErr, hashed_password) => {
     if (hashErr) {
       return next(hashErr);
