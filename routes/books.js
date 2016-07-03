@@ -23,7 +23,7 @@ router.get('/books/:id', (req, res, next) => {
       if (!book) {
         return next();
       }
-      res.send(track);
+      res.send(book);
     })
     .catch((err) => {
       next(err);
@@ -57,16 +57,16 @@ router.patch('/books/:id', (req, res, next) => {
   knex('books')
     .where('id', req.params.id)
     .first()
-    .then((track) => {
-      if (!track) {
+    .then((book) => {
+      if (!book) {
         return next();
       }
 
       return knex('authors')
-        .where ('id', req.body.artist_id)
+        .where ('id', req.body.author_id)
         .first()
-        .then((artist) => {
-          if (!artist) {
+        .then((author) => {
+          if (!author) {
             return res
               .status(400)
               .set('Content-Type', 'text/plain')
