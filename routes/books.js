@@ -68,14 +68,19 @@ router.patch('/books/:id', (req, res, next) => {
 router.delete('/books/:id', (req, res, next) => {
   knex('books')
     .where('id', req.params.id)
-    .del()
+    .first()
     .then((book) => {
-      delete book.id
-      res.send(book[0])
+      return knex('books')
+      .del()
+      .where('id', req.params.id)
+      .then(() => {
+        delete book.id;
+        res.send(book);
+      })
+    })
     .catch((err) => {
       next(err);
     })
-  })
 })
 
 module.exports = router;
