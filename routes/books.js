@@ -56,23 +56,12 @@ router.post('/books', (req, res, next) => {
 router.patch('/books/:id', (req, res, next) => {
   knex('books')
     .where('id', req.params.id)
-    .first()
-    .then((book) => {
-      if (!book) {
-        return next();
-      }
-
-      return knex('authors')
-        .where ('id', req.body.author_id)
-        .first()
-        .then((author) => {
-          if (!author) {
-            return res
-              .status(400)
-              .set('Content-Type', 'text/plain')
-              .send('author_id does not exist')
-          }
-        })
+    .update(req.body, '*')
+    .then((books) => {
+      res.send(books[0])
+    })
+    .catch((err) => {
+      next(err);
     })
 })
 
