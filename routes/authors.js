@@ -48,7 +48,7 @@ router.patch('/authors/:id', (req, res, next) => {
     .catch((err) => {
       next(err);
   });
-})
+});
 
 router.delete('/authors/:id', (req, res, next) => {
   knex('authors')

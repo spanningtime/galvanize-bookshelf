@@ -2,16 +2,16 @@
 
 const express = require('express');
 const router = express.Router();
-const knex = require('../knex')
+const knex = require('../knex');
 
 router.get('/books', (req, res, next) => {
   knex('books')
   .orderBy('id')
   .then((books) => {
-    res.send(books)
+    res.send(books);
   })
   .catch((err) => {
-    next(err)
+    next(err);
   });
 });
 
@@ -34,8 +34,8 @@ router.post('/books', (req, res, next) => {
   knex('authors')
     .where('id', req.body.author_id)
     .first()
-    .then((artist) => {
-      if (!artist) {
+    .then((author) => {
+      if (!author) {
         return res
         .status(400)
         .set('Content-Type', 'text/plain')
@@ -46,7 +46,7 @@ router.post('/books', (req, res, next) => {
         .insert(req.body, '*')
         .then ((results) => {
           res.send(results[0]);
-        });
+        })
       })
         .catch((err) => {
           next(err);
@@ -62,7 +62,20 @@ router.patch('/books/:id', (req, res, next) => {
     })
     .catch((err) => {
       next(err);
+    });
+});
+
+router.delete('/books/:id', (req, res, next) => {
+  knex('books')
+    .where('id', req.params.id)
+    .del()
+    .then((book) => {
+      delete book.id
+      res.send(book[0])
+    .catch((err) => {
+      next(err);
     })
+  })
 })
 
 module.exports = router;
